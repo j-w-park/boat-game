@@ -8,7 +8,7 @@ export class Player extends BaseObject {
     this.transforms.scale.y = 20;
   }
 
-  update(): void {
+  override update(): void {
     if (Game.input.isDown("a")) {
       this.transforms.position.x -= 1;
     }
@@ -23,7 +23,7 @@ export class Player extends BaseObject {
     }
   }
 
-  render(ctx: CanvasRenderingContext2D): void {
+  override render(ctx: CanvasRenderingContext2D): void {
     ctx.fillStyle = "green";
     ctx.beginPath();
     ctx.ellipse(

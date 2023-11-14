@@ -56,6 +56,8 @@ export class Game {
       );
 
       Game.#objects.forEach((o) => o.render(this.#renderContext));
+
+      Game.#objects.forEach((o) => o.lateUpdate());
     }
 
     // request next frame

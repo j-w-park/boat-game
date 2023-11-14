@@ -22,4 +22,6 @@ export abstract class BaseObject {
   abstract update(): void;
 
   abstract render(ctx: CanvasRenderingContext2D): void;
+
+  lateUpdate(): void {}
 }

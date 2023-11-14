@@ -5,7 +5,9 @@ export class Camera extends BaseObject {
     super("camera");
   }
 
-  update(): void {}
+  override update(): void {}
 
-  render(): void {}
+  override render(): void {}
+
+  override lateUpdate(): void {}
 }
