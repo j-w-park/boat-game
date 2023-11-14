@@ -29,13 +29,20 @@ export class Game {
     }
   }
 
-  static #objects: BaseObject[] = [];
+  static #objects: Map<BaseObject["name"], BaseObject> = new Map();
 
-  static createObject(object: BaseObject) {
-    this.#objects.push(object);
+  static CreateObject(object: BaseObject) {
+    if (this.#objects.has(object.name)) {
+      throw new Error(`object name ${object.name} already exists`);
+    }
+    this.#objects.set(object.name, object);
   }
 
-  static findObject(name: BaseObject["name"]) {
-    return this.#objects.find((o) => o.name === name);
+  static DeleteObject(name: BaseObject["name"]) {
+    return this.#objects.delete(name);
+  }
+
+  static GetObject(name: BaseObject["name"]) {
+    return this.#objects.get(name);
   }
 }
