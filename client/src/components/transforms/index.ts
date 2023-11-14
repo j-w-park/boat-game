@@ -3,12 +3,12 @@ import { Vec2 } from "@/utils";
 export class Transforms {
   #position: Vec2;
   #rotation: number;
-  #scale: number;
+  #scale: Vec2;
 
-  constructor(position: Vec2, rotation: number, scale: number) {
-    this.#position = position;
-    this.#rotation = rotation;
-    this.#scale = scale;
+  constructor(args: { position: Vec2; rotation: number; scale: Vec2 }) {
+    this.#position = args.position;
+    this.#rotation = args.rotation;
+    this.#scale = args.scale;
   }
 
   get position() {

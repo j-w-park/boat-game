@@ -4,20 +4,22 @@ import { BaseObject } from "..";
 export class Player extends BaseObject {
   constructor() {
     super("player");
+    this.transforms.scale.x = 20;
+    this.transforms.scale.y = 20;
   }
 
   update(time: number): void {
     if (Game.input.isDown("a")) {
-      this.transform.position.x -= 1;
+      this.transforms.position.x -= 1;
     }
     if (Game.input.isDown("d")) {
-      this.transform.position.x += 1;
+      this.transforms.position.x += 1;
     }
     if (Game.input.isDown("w")) {
-      this.transform.position.y -= 1;
+      this.transforms.position.y -= 1;
     }
     if (Game.input.isDown("s")) {
-      this.transform.position.y += 1;
+      this.transforms.position.y += 1;
     }
   }
 
@@ -25,16 +27,15 @@ export class Player extends BaseObject {
     ctx.fillStyle = "green";
     ctx.beginPath();
     ctx.ellipse(
-      this.transform.position.x,
-      this.transform.position.y,
-      20,
-      20,
+      this.transforms.position.x,
+      this.transforms.position.y,
+      this.transforms.scale.x,
+      this.transforms.scale.y,
       0,
       0,
       2 * Math.PI
     );
     ctx.stroke();
     ctx.fill();
-    // ctx.ellipse(0, 0, 0.1, 0.1, 0, 0, 2 * Math.PI);
   }
 }

@@ -5,7 +5,11 @@ export abstract class BaseObject {
   /** 오브젝트 식별자, 중복 X */
   #name: string;
 
-  #transform: Transforms = new Transforms(new Vec2(0, 0), 0, 1);
+  #transforms: Transforms = new Transforms({
+    position: new Vec2(0, 0),
+    rotation: 0,
+    scale: new Vec2(1, 1),
+  });
 
   constructor(name: string) {
     this.#name = name;
@@ -15,8 +19,8 @@ export abstract class BaseObject {
     return this.#name;
   }
 
-  get transform() {
-    return this.#transform;
+  get transforms() {
+    return this.#transforms;
   }
 
   abstract update(time: number): void;
