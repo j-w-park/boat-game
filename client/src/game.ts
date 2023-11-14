@@ -2,39 +2,49 @@ import { BaseObject, Player } from "./object";
 import { Input } from "./utils";
 
 export class Game {
-  #frame: number | null = null;
-
   #canvas: HTMLCanvasElement;
 
+  #renderContext: CanvasRenderingContext2D;
+
+  #frame: number | null;
+
   constructor(canvas: HTMLCanvasElement) {
+    const ctx = canvas.getContext("2d");
+    if (!ctx) {
+      throw new Error(`canvas context not found`);
+    }
     this.#canvas = canvas;
+    this.#frame = null;
+    this.#renderContext = ctx;
+  }
+
+  start() {
     this.#canvas.width = 1920;
     this.#canvas.height = 1080;
     this.#canvas.style.width = "100vw";
     this.#canvas.style.height = "calc(100vw * 9 / 16)";
-  }
 
-  start() {
     Game.CreateObject(new Player());
+
     this.update(0);
   }
 
   update(time: number) {
-    const ctx = this.#canvas.getContext("2d");
-    if (!ctx) {
-      throw new Error(`canvas context not found`);
-    }
-
     Game.#objects.forEach((object) => object.update(time));
 
     // TODO: Another updates here (ex. collision, interaction, constraints, etc...)
 
-    // re-render
-    ctx.fillStyle = "black";
-    ctx.clearRect(0, 0, this.#canvas.width, this.#canvas.height);
-    ctx.fillRect(0, 0, this.#canvas.width, this.#canvas.height);
+    // render
+    this.#renderContext.fillStyle = "black";
+    this.#renderContext.clearRect(
+      0,
+      0,
+      this.#canvas.width,
+      this.#canvas.height
+    );
+    this.#renderContext.fillRect(0, 0, this.#canvas.width, this.#canvas.height);
 
-    Game.#objects.forEach((object) => object.render(ctx));
+    Game.#objects.forEach((object) => object.render(this.#renderContext));
 
     // request next frame
     this.#frame = requestAnimationFrame(this.update.bind(this));
@@ -49,12 +59,18 @@ export class Game {
       Game.#objects.clear();
 
       // clear canvas
-      const ctx = this.#canvas.getContext("2d");
-      if (!ctx) {
-        throw new Error(`canvas context not found`);
-      }
-      ctx.clearRect(0, 0, this.#canvas.width, this.#canvas.height);
-      ctx.fillRect(0, 0, this.#canvas.width, this.#canvas.height);
+      this.#renderContext.clearRect(
+        0,
+        0,
+        this.#canvas.width,
+        this.#canvas.height
+      );
+      this.#renderContext.fillRect(
+        0,
+        0,
+        this.#canvas.width,
+        this.#canvas.height
+      );
     }
   }
 
