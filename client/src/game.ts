@@ -1,4 +1,4 @@
-import { BaseObject } from "./object";
+import { BaseObject, Player } from "./object";
 import { Input } from "./utils";
 
 export class Game {
@@ -15,6 +15,7 @@ export class Game {
   }
 
   start() {
+    Game.CreateObject(new Player());
     this.update(0);
   }
 
