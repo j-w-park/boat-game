@@ -23,7 +23,7 @@ export abstract class BaseObject {
     return this.#transforms;
   }
 
-  abstract update(time: number): void;
+  abstract update(): void;
 
   abstract render(ctx: CanvasRenderingContext2D): void;
 }

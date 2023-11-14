@@ -8,6 +8,8 @@ export class Game {
 
   #frame: ReturnType<typeof requestAnimationFrame> | null;
 
+  #prevTime: number = 0;
+
   constructor(canvas: HTMLCanvasElement) {
     const ctx = canvas.getContext("2d");
     if (!ctx) {
@@ -30,21 +32,31 @@ export class Game {
   }
 
   update(time: number) {
-    Game.#objects.forEach((object) => object.update(time));
+    if (time - this.#prevTime > 1000 / 60) {
+      Game.deltaTime = time - this.#prevTime;
+      this.#prevTime = time;
 
-    // TODO: Another updates here (ex. collision, interaction, constraints, etc...)
+      Game.#objects.forEach((o) => o.update());
 
-    // render
-    this.#renderContext.fillStyle = "black";
-    this.#renderContext.clearRect(
-      0,
-      0,
-      this.#canvas.width,
-      this.#canvas.height
-    );
-    this.#renderContext.fillRect(0, 0, this.#canvas.width, this.#canvas.height);
+      // TODO: Another updates here (ex. collision, interaction, constraints, etc...)
 
-    Game.#objects.forEach((object) => object.render(this.#renderContext));
+      // render
+      this.#renderContext.fillStyle = "black";
+      this.#renderContext.clearRect(
+        0,
+        0,
+        this.#canvas.width,
+        this.#canvas.height
+      );
+      this.#renderContext.fillRect(
+        0,
+        0,
+        this.#canvas.width,
+        this.#canvas.height
+      );
+
+      Game.#objects.forEach((o) => o.render(this.#renderContext));
+    }
 
     // request next frame
     this.#frame = requestAnimationFrame(this.update.bind(this));
@@ -73,6 +85,8 @@ export class Game {
       );
     }
   }
+
+  static deltaTime: number = 0;
 
   static input: Input = new Input();
 

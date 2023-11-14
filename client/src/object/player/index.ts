@@ -8,7 +8,7 @@ export class Player extends BaseObject {
     this.transforms.scale.y = 20;
   }
 
-  update(time: number): void {
+  update(): void {
     if (Game.input.isDown("a")) {
       this.transforms.position.x -= 1;
     }
