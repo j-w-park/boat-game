@@ -6,7 +6,7 @@ export class Game {
 
   #renderContext: CanvasRenderingContext2D;
 
-  #frame: number | null;
+  #frame: ReturnType<typeof requestAnimationFrame> | null;
 
   constructor(canvas: HTMLCanvasElement) {
     const ctx = canvas.getContext("2d");
