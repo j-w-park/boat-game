@@ -1,4 +1,5 @@
 import { BaseObject } from "./object";
+import { Input } from "./utils";
 
 export class Game {
   #frame: number | null = null;
@@ -55,6 +56,8 @@ export class Game {
       ctx.fillRect(0, 0, this.#canvas.width, this.#canvas.height);
     }
   }
+
+  static input: Input = new Input();
 
   static #objects: Map<BaseObject["name"], BaseObject> = new Map();
 
