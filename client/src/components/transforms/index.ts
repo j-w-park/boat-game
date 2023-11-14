@@ -5,10 +5,10 @@ export class Transforms {
   #rotation: number;
   #scale: Vec2;
 
-  constructor(args: { position: Vec2; rotation: number; scale: Vec2 }) {
-    this.#position = args.position;
-    this.#rotation = args.rotation;
-    this.#scale = args.scale;
+  constructor(args?: { position?: Vec2; rotation?: number; scale?: Vec2 }) {
+    this.#position = args?.position ?? new Vec2(0, 0);
+    this.#rotation = args?.rotation ?? 0;
+    this.#scale = args?.scale ?? new Vec2(0, 0);
   }
 
   get position() {
