@@ -8,14 +8,13 @@ export class Game {
 
   constructor(canvas: HTMLCanvasElement) {
     this.#canvas = canvas;
+    this.#canvas.width = 1920;
+    this.#canvas.height = 1080;
+    this.#canvas.style.width = "100vw";
+    this.#canvas.style.height = "calc(100vw * 9 / 16)";
   }
 
   start() {
-    const ctx = this.#canvas.getContext("2d");
-    if (!ctx) {
-      throw new Error(`canvas context not found`);
-    }
-    ctx.fillRect(0, 0, this.#canvas.width, this.#canvas.height);
     this.update(0);
   }
 
@@ -30,6 +29,7 @@ export class Game {
     // TODO: Another updates here (ex. collision, interaction, constraints, etc...)
 
     // re-render
+    ctx.fillStyle = "black";
     ctx.clearRect(0, 0, this.#canvas.width, this.#canvas.height);
     ctx.fillRect(0, 0, this.#canvas.width, this.#canvas.height);
 
