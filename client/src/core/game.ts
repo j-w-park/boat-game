@@ -1,58 +1,41 @@
 import { BaseObject, Player } from "@/object";
+import { Camera } from "@/object/camera";
+import { Vec2 } from "@/utils";
 import { Input } from "./input";
+import { Renderer } from "./renderer";
 
 export class Game {
-  #canvas: HTMLCanvasElement;
-
-  #renderContext: CanvasRenderingContext2D;
+  #renderer: Renderer;
 
   #frame: ReturnType<typeof requestAnimationFrame> | null;
 
   #prevTime: number = 0;
 
   constructor(canvas: HTMLCanvasElement) {
-    const ctx = canvas.getContext("2d");
-    if (!ctx) {
-      throw new Error(`canvas context not found`);
-    }
-    this.#canvas = canvas;
+    this.#renderer = new Renderer(canvas);
     this.#frame = null;
-    this.#renderContext = ctx;
   }
 
   start() {
-    this.#canvas.width = 1920;
-    this.#canvas.height = 1080;
-    this.#canvas.style.width = "100vw";
-    this.#canvas.style.height = "calc(100vw * 9 / 16)";
-
-    Game.CreateObject(new Player());
-
+    const playerObject = new Player();
+    const cameraObject = new Camera({
+      scale: new Vec2(100, 100),
+      target: playerObject,
+    });
+    Game.CreateObject(cameraObject);
+    Game.CreateObject(playerObject);
+    this.#renderer.init(cameraObject);
     this.#update(0);
   }
 
   stop() {
-    if (this.#frame) {
-      cancelAnimationFrame(this.#frame);
-      this.#frame = null;
-
-      // clear objects
-      Game.#objects.clear();
-
-      // clear canvas
-      this.#renderContext.clearRect(
-        0,
-        0,
-        this.#canvas.width,
-        this.#canvas.height
-      );
-      this.#renderContext.fillRect(
-        0,
-        0,
-        this.#canvas.width,
-        this.#canvas.height
-      );
+    if (this.#frame === null) {
+      return;
     }
+    cancelAnimationFrame(this.#frame);
+    this.#frame = null;
+    Game.#objects.clear();
+    this.#renderer.clear();
   }
 
   #update(time: number) {
@@ -64,32 +47,14 @@ export class Game {
 
       // TODO: Another updates here (ex. collision, interaction, constraints, etc...)
 
-      // render
-      this.#render();
+      this.#renderer.prepare();
+      Game.#objects.forEach((o) => this.#renderer.render(o));
 
       Game.#objects.forEach((o) => o.lateUpdate());
     }
 
     // request next frame
     this.#frame = requestAnimationFrame(this.#update.bind(this));
-  }
-
-  #render() {
-    this.#renderContext.fillStyle = "black";
-    this.#renderContext.clearRect(
-      0,
-      0,
-      this.#canvas.width,
-      this.#canvas.height
-    );
-    this.#renderContext.fillRect(0, 0, this.#canvas.width, this.#canvas.height);
-
-    const camera = Game.GetObject("camera");
-    if (!camera) {
-      return;
-    }
-
-    Game.#objects.forEach((o) => o.render(this.#renderContext));
   }
 
   static deltaTime: number = 0;

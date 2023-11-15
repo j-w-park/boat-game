@@ -1,6 +1,7 @@
 import { Transforms } from "@/components";
+import { RenderTarget } from "@/core/renderer";
 
-export abstract class BaseObject {
+export abstract class BaseObject implements RenderTarget {
   /** 오브젝트 식별자, 중복 X */
   #name: string;
 
