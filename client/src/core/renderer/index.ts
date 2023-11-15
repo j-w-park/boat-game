@@ -51,7 +51,9 @@ export class Renderer {
   }
 
   render(rt: RenderTarget) {
+    this.#renderContext.save();
     rt.render(this.#renderContext);
+    this.#renderContext.restore();
   }
 
   clear() {
