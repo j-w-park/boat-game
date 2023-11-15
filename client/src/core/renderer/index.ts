@@ -24,16 +24,17 @@ export class Renderer {
     this.#canvas.height = 1080;
     this.#canvas.style.width = "100vw";
     this.#canvas.style.height = "calc(100vw * 9 / 16)";
+
     this.#camera = camera;
     this.#camera.transforms.scale.x = 100;
     this.#camera.transforms.scale.y =
       (100 * this.#canvas.height) / this.#canvas.width;
   }
 
-  prepare() {
+  prepare(): boolean {
     this.clear();
     if (!this.#camera) {
-      return;
+      return false;
     }
     const kx = this.#canvas.width / this.#camera.transforms.scale.x;
     const ky = -this.#canvas.height / this.#camera.transforms.scale.y;
@@ -45,6 +46,7 @@ export class Renderer {
       -kx * this.#camera.transforms.position.x + this.#canvas.width / 2,
       -ky * this.#camera.transforms.position.y + this.#canvas.height / 2
     );
+    return true;
   }
 
   render(rt: RenderTarget) {
