@@ -1,2 +1,2 @@
-export { BaseObject } from "./base-object";
+export { BaseObject } from "./base";
 export { Player } from "./player";
