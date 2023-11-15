@@ -1,4 +1,4 @@
-import { Game } from "./game";
+import { Game } from "./core/game";
 import "./style.css";
 
 const canvas = document.getElementById("app");

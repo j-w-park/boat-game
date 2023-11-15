@@ -1,4 +1,4 @@
-import { Game } from "@/game";
+import { Game } from "@/core/game";
 import { BaseObject } from "..";
 
 export class Player extends BaseObject {
