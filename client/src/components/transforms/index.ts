@@ -15,7 +15,7 @@ export class Transforms {
     return this.#position;
   }
   set position(value) {
-    this.#position = value;
+    this.#position = new Vec2(value.x, value.y);
   }
 
   get rotation() {
@@ -29,6 +29,6 @@ export class Transforms {
     return this.#scale;
   }
   set scale(value) {
-    this.#scale = value;
+    this.#scale = new Vec2(value.x, value.y);
   }
 }
