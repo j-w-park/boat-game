@@ -2,6 +2,7 @@ import { BaseObject, Player } from "@/object";
 import { Camera } from "@/object/camera";
 import { Input } from "./input";
 import { Renderer } from "./renderer";
+import { Pepe } from "@/object/pepe";
 
 export class Game {
   #renderer: Renderer;
@@ -20,6 +21,7 @@ export class Game {
     const cameraObject = new Camera({ target: playerObject });
     Game.CreateObject(cameraObject);
     Game.CreateObject(playerObject);
+    Game.CreateObject(new Pepe());
     this.#renderer.init(cameraObject);
     this.#update(0);
   }
