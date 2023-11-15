@@ -4,8 +4,8 @@ import { BaseObject } from "..";
 export class Player extends BaseObject {
   constructor() {
     super("player");
-    this.transforms.scale.x = 20;
-    this.transforms.scale.y = 20;
+    this.transforms.scale.x = 5;
+    this.transforms.scale.y = 5;
   }
 
   override update(): void {
@@ -16,16 +16,17 @@ export class Player extends BaseObject {
       this.transforms.position.x += 1;
     }
     if (Game.input.isDown("w")) {
-      this.transforms.position.y -= 1;
+      this.transforms.position.y += 1;
     }
     if (Game.input.isDown("s")) {
-      this.transforms.position.y += 1;
+      this.transforms.position.y -= 1;
     }
   }
 
   override render(ctx: CanvasRenderingContext2D): void {
-    ctx.fillStyle = "green";
     ctx.beginPath();
+
+    ctx.fillStyle = "green";
     ctx.ellipse(
       this.transforms.position.x,
       this.transforms.position.y,
@@ -35,7 +36,21 @@ export class Player extends BaseObject {
       0,
       2 * Math.PI
     );
-    ctx.stroke();
     ctx.fill();
+
+    ctx.save();
+    ctx.transform(1, 0, 0, -1, 0, 2 * this.transforms.position.y);
+    ctx.fillStyle = "white";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.font = "9px Arial";
+    ctx.fillText(
+      `${this.transforms.position.x}, ${this.transforms.position.y}`,
+      this.transforms.position.x,
+      this.transforms.position.y
+    );
+    ctx.restore();
+
+    ctx.closePath();
   }
 }

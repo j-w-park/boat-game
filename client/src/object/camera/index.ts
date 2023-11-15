@@ -31,5 +31,7 @@ export class Camera extends BaseObject {
 
   override render(): void {}
 
-  override lateUpdate(): void {}
+  override lateUpdate(): void {
+    this.transforms.position = this.#target.transforms.position;
+  }
 }
