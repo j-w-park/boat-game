@@ -20,15 +20,15 @@ export class Renderer {
   }
 
   init(camera: Camera) {
-    this.#canvas.width = 1920;
-    this.#canvas.height = 1080;
+    const [w, h] = [1920, 1080];
+    this.#canvas.width = w;
+    this.#canvas.height = h;
     this.#canvas.style.width = "100vw";
-    this.#canvas.style.height = "calc(100vw * 9 / 16)";
+    this.#canvas.style.height = `calc(100vw * ${h} / ${w})`;
 
     this.#camera = camera;
-    this.#camera.transforms.scale.x = 100;
-    this.#camera.transforms.scale.y =
-      (100 * this.#canvas.height) / this.#canvas.width;
+    this.#camera.aspectRatio = w / h;
+    this.#camera.height = 200;
   }
 
   prepare(): boolean {
@@ -36,15 +36,16 @@ export class Renderer {
     if (!this.#camera) {
       return false;
     }
-    const kx = this.#canvas.width / this.#camera.transforms.scale.x;
-    const ky = -this.#canvas.height / this.#camera.transforms.scale.y;
+    const { width, height } = this.#canvas;
+    const kx = width / this.#camera.transforms.scale.x;
+    const ky = -height / this.#camera.transforms.scale.y;
     this.#renderContext.setTransform(
       kx,
       0,
       0,
       ky,
-      -kx * this.#camera.transforms.position.x + this.#canvas.width / 2,
-      -ky * this.#camera.transforms.position.y + this.#canvas.height / 2
+      width / 2 - kx * this.#camera.transforms.position.x,
+      height / 2 - ky * this.#camera.transforms.position.y
     );
     return true;
   }

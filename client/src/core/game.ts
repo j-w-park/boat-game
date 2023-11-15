@@ -1,6 +1,5 @@
 import { BaseObject, Player } from "@/object";
 import { Camera } from "@/object/camera";
-import { Vec2 } from "@/utils";
 import { Input } from "./input";
 import { Renderer } from "./renderer";
 
@@ -18,10 +17,7 @@ export class Game {
 
   start() {
     const playerObject = new Player();
-    const cameraObject = new Camera({
-      scale: new Vec2(100, 100),
-      target: playerObject,
-    });
+    const cameraObject = new Camera({ target: playerObject });
     Game.CreateObject(cameraObject);
     Game.CreateObject(playerObject);
     this.#renderer.init(cameraObject);
