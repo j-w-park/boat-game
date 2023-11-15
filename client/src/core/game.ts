@@ -43,11 +43,11 @@ export class Game {
 
       // TODO: Another updates here (ex. collision, interaction, constraints, etc...)
 
+      Game.#objects.forEach((o) => o.lateUpdate());
+
       if (this.#renderer.prepare()) {
         Game.#objects.forEach((o) => this.#renderer.render(o));
       }
-
-      Game.#objects.forEach((o) => o.lateUpdate());
     }
 
     // request next frame
