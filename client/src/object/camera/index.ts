@@ -2,12 +2,12 @@ import { Vec2 } from "@/utils";
 import { BaseObject } from "..";
 
 export class Camera extends BaseObject {
-  #size: Vec2;
+  #target: BaseObject;
 
-  constructor(args: { size: Vec2 }) {
+  constructor(args: { scale: Vec2; target: BaseObject }) {
     super("camera");
-
-    this.#size = args.size;
+    this.transforms.scale = args.scale;
+    this.#target = args.target;
   }
 
   override update(): void {}
