@@ -1,4 +1,5 @@
 import { Camera } from "@/object/camera";
+import { Game } from "../game";
 import { RenderTarget } from "./types";
 
 export * from "./types";
@@ -19,6 +20,17 @@ export class Renderer {
     this.#renderContext = ctx;
   }
 
+  get canvas() {
+    return this.#canvas;
+  }
+
+  get camera() {
+    if (!this.#camera) {
+      throw new Error(`camera not initialized`);
+    }
+    return this.#camera;
+  }
+
   init(camera: Camera) {
     const [w, h] = [1920, 1080];
     this.#canvas.width = w;
@@ -31,29 +43,41 @@ export class Renderer {
     this.#camera.height = 200;
   }
 
-  prepare(): boolean {
-    this.clear();
+  render(rt: RenderTarget) {
     if (!this.#camera) {
-      return false;
+      return;
     }
-    const { width, height } = this.#canvas;
-    const kx = width / this.#camera.transforms.scale.x;
-    const ky = -height / this.#camera.transforms.scale.y;
+    const { mapScale } = Game;
+    const { width: scrW, height: scrH } = this.#canvas;
+    const { position: camPos, scale: camScale } = this.#camera.transforms;
+    const { position: rtPos, scale: rtScale } = rt.transforms;
+
+    const kx = scrW / camScale.x;
+    const ky = -scrH / camScale.y;
     this.#renderContext.setTransform(
       kx,
       0,
       0,
       ky,
-      width / 2 - kx * this.#camera.transforms.position.x,
-      height / 2 - ky * this.#camera.transforms.position.y
+      scrW / 2 - kx * camPos.x,
+      scrH / 2 - ky * camPos.y
     );
-    return true;
-  }
 
-  render(rt: RenderTarget) {
-    this.#renderContext.save();
-    rt.render(this.#renderContext);
-    this.#renderContext.restore();
+    // Toroidal space rendering
+    if (
+      camPos.x + camScale.x / 2 > mapScale.x / 2 &&
+      -mapScale.x / 2 < rtPos.x - rtScale.x / 2 &&
+      rtPos.x - rtScale.x / 2 < camPos.x + camScale.x / 2 - mapScale.x
+    ) {
+      this.#renderContext.translate(mapScale.x, 0);
+      this.#renderContext.save();
+      rt.render(this.#renderContext);
+      this.#renderContext.restore();
+    } else {
+      this.#renderContext.save();
+      rt.render(this.#renderContext);
+      this.#renderContext.restore();
+    }
   }
 
   clear() {

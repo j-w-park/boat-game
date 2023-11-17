@@ -3,6 +3,8 @@ import { Camera } from "@/object/camera";
 import { Input } from "./input";
 import { Renderer } from "./renderer";
 import { Pepe } from "@/object/pepe";
+import { LineBox } from "@/object/line-box";
+import { Vec2 } from "@/utils";
 
 export class Game {
   #renderer: Renderer;
@@ -19,6 +21,9 @@ export class Game {
   start() {
     const playerObject = new Player();
     const cameraObject = new Camera({ target: playerObject });
+    const lineBox = new LineBox();
+    lineBox.transforms.scale = Game.mapScale;
+    Game.CreateObject(lineBox);
     Game.CreateObject(cameraObject);
     Game.CreateObject(playerObject);
     Game.CreateObject(new Pepe());
@@ -44,17 +49,34 @@ export class Game {
       Game.#objects.forEach((o) => o.update());
 
       // TODO: Another updates here (ex. collision, interaction, constraints, etc...)
+      this.#adjustObjectPositionsToToroidalSpace();
 
       Game.#objects.forEach((o) => o.lateUpdate());
 
-      if (this.#renderer.prepare()) {
-        Game.#objects.forEach((o) => this.#renderer.render(o));
-      }
+      this.#renderer.clear();
+      Game.#objects.forEach((o) => this.#renderer.render(o));
     }
 
     // request next frame
     this.#frame = requestAnimationFrame(this.#update.bind(this));
   }
+
+  #adjustObjectPositionsToToroidalSpace() {
+    Game.#objects.forEach((o) => {
+      if (o.transforms.position.x > Game.mapScale.x / 2) {
+        o.transforms.position.x -= Game.mapScale.x;
+      } else if (o.transforms.position.x < -Game.mapScale.x / 2) {
+        o.transforms.position.x += Game.mapScale.x;
+      }
+      if (o.transforms.position.y > Game.mapScale.y / 2) {
+        o.transforms.position.y -= Game.mapScale.y;
+      } else if (o.transforms.position.y < -Game.mapScale.y / 2) {
+        o.transforms.position.y += Game.mapScale.y;
+      }
+    });
+  }
+
+  static mapScale: Vec2 = new Vec2(500, 500);
 
   static deltaTime: number = 0;
 
