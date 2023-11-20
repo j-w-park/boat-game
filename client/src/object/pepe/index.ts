@@ -19,12 +19,12 @@ export class Pepe extends BaseObject {
     this.#velocity = new Vec2(
       Math.random() * 2 - 1,
       Math.random() * 2 - 1
-    ).normalized.scale(0.1);
+    ).normalized;
   }
 
   update(): void {
     this.transforms.position = this.transforms.position.add(
-      this.#velocity.scale(1000 * Game.deltaTime)
+      this.#velocity.scale(100 * Game.deltaTime)
     );
   }
 

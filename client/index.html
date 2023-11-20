@@ -6,7 +6,26 @@
     <title>Demo</title>
   </head>
   <body>
-    <canvas id="app"></canvas>
+    <main>
+      <canvas id="app"></canvas>
+      <div id="ui">
+        <div id="turns">
+          <span><strong>Turns Left</strong>: 360</span>
+          <span><strong>Planning Time Left</strong>: 59 sec</span>
+          <button>End Planning</button>
+        </div>
+        <div id="controller">
+          <label>
+            <input type="range" min="0" max="360" value="0" />
+            <strong>Acceleration</strong>
+          </label>
+          <label>
+            <input type="range" min="0" max="360" value="0" />
+            <strong>Steering</strong>
+          </label>
+        </div>
+      </div>
+    </main>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

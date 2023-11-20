@@ -32,11 +32,11 @@ export class Renderer {
   }
 
   init(camera: Camera) {
-    const [w, h] = [1920, 1080];
+    const [w, h] = [2400, 1800]; // resolution
     this.#canvas.width = w;
     this.#canvas.height = h;
-    this.#canvas.style.width = "100vw";
-    this.#canvas.style.height = `calc(100vw * ${h} / ${w})`;
+    this.#canvas.style.width = "var(--ui-width)";
+    this.#canvas.style.height = `calc(var(--ui-width) * ${h} / ${w})`;
 
     this.#camera = camera;
     this.#camera.aspectRatio = w / h;
@@ -95,9 +95,27 @@ export class Renderer {
 
   clear() {
     const { width, height } = this.#canvas;
-    this.#renderContext.fillStyle = "#000";
+    this.#renderContext.fillStyle = "#fff";
     this.#renderContext.resetTransform();
     this.#renderContext.clearRect(0, 0, width, height);
     this.#renderContext.fillRect(0, 0, width, height);
+
+    // clip a circular area in the center
+    this.#renderContext.beginPath();
+    this.#renderContext.strokeStyle = "#000";
+    this.#renderContext.lineWidth = 2;
+    this.#renderContext.ellipse(
+      width / 2,
+      height / 2,
+      (height / 2) * 0.9,
+      (height / 2) * 0.9,
+      0,
+      0,
+      Math.PI * 2,
+      true
+    );
+    this.#renderContext.stroke();
+    this.#renderContext.closePath();
+    this.#renderContext.clip();
   }
 }

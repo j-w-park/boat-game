@@ -1,12 +1,65 @@
 :root {
-  background-color: #242424;
+  background-color: #cacaca;
+
+  font-family: "Inter";
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+
+  --ui-width: calc(100vh * 0.8);
 }
 
 body {
+  margin: 0;
+}
+
+main {
   width: 100vw;
   height: 100vh;
-  margin: 0;
   display: flex;
+  flex-direction: column;
+  gap: 12px;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+}
+
+#app {
+  border-radius: 12px;
+}
+
+#ui {
+  width: var(--ui-width);
+
+  background: #fff;
+  box-sizing: border-box;
+  border-radius: 12px;
+  border: 1px solid #fff;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 8px 16px;
+  gap: 12px;
+}
+
+#ui > #turns {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+#ui > #controller {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+#ui > #controller > label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
