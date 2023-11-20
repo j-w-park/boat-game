@@ -49,10 +49,10 @@ export class Game {
 
   #update(time: number) {
     if (time - this.#prevTime > 1000 / 120) {
-      Game.deltaTime = time - this.#prevTime;
+      Game.deltaTime = (time - this.#prevTime) / 1000;
       this.#prevTime = time;
 
-      Game.#objects.forEach((o) => o.update());
+    Game.#objects.forEach((o) => o.update());
 
       // TODO: Another updates here (ex. collision, interaction, constraints, etc...)
       this.#adjustObjectPositionsToToroidalSpace();

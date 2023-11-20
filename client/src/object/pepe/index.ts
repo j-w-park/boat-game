@@ -24,7 +24,7 @@ export class Pepe extends BaseObject {
 
   update(): void {
     this.transforms.position = this.transforms.position.add(
-      this.#velocity.scale(Game.deltaTime)
+      this.#velocity.scale(1000 * Game.deltaTime)
     );
   }
 
