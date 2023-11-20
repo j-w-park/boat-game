@@ -38,7 +38,6 @@ export class Player extends BaseObject {
     );
     ctx.fill();
 
-    ctx.save();
     ctx.transform(1, 0, 0, -1, 0, 2 * this.transforms.position.y);
     ctx.fillStyle = "white";
     ctx.textAlign = "center";
@@ -49,8 +48,14 @@ export class Player extends BaseObject {
       this.transforms.position.x,
       this.transforms.position.y
     );
-    ctx.restore();
 
+    const fps = 1000 / Game.deltaTime;
+
+    ctx.fillText(
+      `fps: ${(fps * 10 - ((fps * 10) % 1)) / 10}`,
+      this.transforms.position.x,
+      this.transforms.position.y + 15
+    );
     ctx.closePath();
   }
 }

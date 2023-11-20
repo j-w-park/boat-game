@@ -3,8 +3,8 @@ import { BaseObject } from "..";
 export class Pepe extends BaseObject {
   #img: HTMLImageElement;
 
-  constructor() {
-    super("pepe");
+  constructor(id: number) {
+    super(`pepe-${id}`);
     this.#img = new Image();
     this.#img.src = "/pepe.gif";
     this.transforms.position.x = -100;
@@ -24,7 +24,6 @@ export class Pepe extends BaseObject {
       this.transforms.scale.x,
       this.transforms.scale.y
     );
-    ctx.save();
     ctx.transform(1, 0, 0, -1, 0, 2 * this.transforms.position.y);
     ctx.drawImage(
       this.#img,

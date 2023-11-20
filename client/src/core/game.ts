@@ -1,10 +1,9 @@
 import { BaseObject, Player } from "@/object";
 import { Camera } from "@/object/camera";
+import { Pepe } from "@/object/pepe";
+import { Vec2 } from "@/utils";
 import { Input } from "./input";
 import { Renderer } from "./renderer";
-import { Pepe } from "@/object/pepe";
-import { LineBox } from "@/object/line-box";
-import { Vec2 } from "@/utils";
 
 export class Game {
   #renderer: Renderer;
@@ -20,14 +19,21 @@ export class Game {
 
   start() {
     const playerObject = new Player();
-    const cameraObject = new Camera({ target: playerObject });
-    const lineBox = new LineBox();
-    lineBox.transforms.scale = Game.mapScale;
-    Game.CreateObject(lineBox);
-    Game.CreateObject(cameraObject);
     Game.CreateObject(playerObject);
-    Game.CreateObject(new Pepe());
+
+    const cameraObject = new Camera({ target: playerObject });
     this.#renderer.init(cameraObject);
+    Game.CreateObject(cameraObject);
+
+    for (let i = 0; i < 50; ++i) {
+      const pepe = new Pepe(i);
+      pepe.transforms.position.x =
+        Math.cos((2 * Math.PI * i) / 50) * (Game.mapScale.x / 2 - 10);
+      pepe.transforms.position.y =
+        Math.sin((2 * Math.PI * i) / 50) * (Game.mapScale.y / 2 - 10);
+      Game.CreateObject(pepe);
+    }
+
     this.#update(0);
   }
 

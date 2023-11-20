@@ -63,21 +63,34 @@ export class Renderer {
       scrH / 2 - ky * camPos.y
     );
 
+    const mapLeft = -mapScale.x / 2;
+    const mapRight = mapScale.x / 2;
+    const mapUp = mapScale.y / 2;
+    const mapDown = -mapScale.y / 2;
+
+    const camLeft = camPos.x - camScale.x / 2;
+    const camRight = camPos.x + camScale.x / 2;
+    const camUp = camPos.y + camScale.y / 2;
+    const camDown = camPos.y - camScale.y / 2;
+
+    const rtLeft = rtPos.x - rtScale.x / 2;
+    const rtRight = rtPos.x + rtScale.x / 2;
+    const rtUp = rtPos.y + rtScale.y / 2;
+    const rtDown = rtPos.y - rtScale.y / 2;
+
     // Toroidal space rendering
-    if (
-      camPos.x + camScale.x / 2 > mapScale.x / 2 &&
-      -mapScale.x / 2 < rtPos.x - rtScale.x / 2 &&
-      rtPos.x - rtScale.x / 2 < camPos.x + camScale.x / 2 - mapScale.x
-    ) {
+    if (mapRight < camRight && rtLeft + mapScale.x < camRight) {
       this.#renderContext.translate(mapScale.x, 0);
-      this.#renderContext.save();
-      rt.render(this.#renderContext);
-      this.#renderContext.restore();
-    } else {
-      this.#renderContext.save();
-      rt.render(this.#renderContext);
-      this.#renderContext.restore();
+    } else if (camLeft < mapLeft && camLeft < rtRight - mapScale.x) {
+      this.#renderContext.translate(-mapScale.x, 0);
     }
+    if (mapUp < camUp && rtDown + mapScale.y < camUp) {
+      this.#renderContext.translate(0, mapScale.y);
+    } else if (camDown < mapDown && camDown < rtUp - mapScale.y) {
+      this.#renderContext.translate(0, -mapScale.y);
+    }
+
+    rt.render(this.#renderContext);
   }
 
   clear() {
