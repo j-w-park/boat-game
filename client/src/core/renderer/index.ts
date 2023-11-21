@@ -40,7 +40,7 @@ export class Renderer {
 
     this.#camera = camera;
     this.#camera.aspectRatio = w / h;
-    this.#camera.height = 200;
+    this.#camera.height = 500;
   }
 
   render(rt: RenderTarget) {
@@ -107,8 +107,8 @@ export class Renderer {
     this.#renderContext.ellipse(
       width / 2,
       height / 2,
-      (height / 2) * 0.9,
-      (height / 2) * 0.9,
+      (height / 2) * 0.95,
+      (height / 2) * 0.95,
       0,
       0,
       Math.PI * 2,

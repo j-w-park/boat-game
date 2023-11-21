@@ -52,7 +52,7 @@ export class Game {
       Game.deltaTime = (time - this.#prevTime) / 1000;
       this.#prevTime = time;
 
-    Game.#objects.forEach((o) => o.update());
+      Game.#objects.forEach((o) => o.update());
 
       // TODO: Another updates here (ex. collision, interaction, constraints, etc...)
       this.#adjustObjectPositionsToToroidalSpace();
@@ -82,7 +82,7 @@ export class Game {
     });
   }
 
-  static mapScale: Vec2 = new Vec2(500, 500);
+  static mapScale: Vec2 = new Vec2(1000, 1000);
 
   static deltaTime: number = 0;
 

@@ -32,9 +32,8 @@ export class Player extends BaseObject {
   }
 
   override render(ctx: CanvasRenderingContext2D): void {
-    ctx.beginPath();
-
     ctx.fillStyle = "green";
+    ctx.beginPath();
     ctx.ellipse(
       this.transforms.position.x,
       this.transforms.position.y,
@@ -46,26 +45,23 @@ export class Player extends BaseObject {
     );
     ctx.fill();
 
-    ctx.transform(1, 0, 0, -1, 0, 2 * this.transforms.position.y);
-    ctx.fillStyle = "black";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.font = "9px Arial";
-    ctx.fillText(
-      `${Math.round(this.transforms.position.x)}, ${Math.round(
-        this.transforms.position.y
-      )}`,
-      this.transforms.position.x,
-      this.transforms.position.y
-    );
-
-    const fps = 1 / Game.deltaTime;
-
-    ctx.fillText(
-      `fps: ${(fps * 10 - ((fps * 10) % 1)) / 10}`,
-      this.transforms.position.x,
-      this.transforms.position.y + 15
-    );
-    ctx.closePath();
+    // ctx.transform(1, 0, 0, -1, 0, 2 * this.transforms.position.y);
+    // const fps = 1 / Game.deltaTime;
+    // ctx.fillStyle = "black";
+    // ctx.textAlign = "center";
+    // ctx.textBaseline = "middle";
+    // ctx.font = "9px Arial";
+    // ctx.fillText(
+    //   `${Math.round(this.transforms.position.x)}, ${Math.round(
+    //     this.transforms.position.y
+    //   )}`,
+    //   this.transforms.position.x,
+    //   this.transforms.position.y
+    // );
+    // ctx.fillText(
+    //   `fps: ${(fps * 10 - ((fps * 10) % 1)) / 10}`,
+    //   this.transforms.position.x,
+    //   this.transforms.position.y + 15
+    // );
   }
 }
